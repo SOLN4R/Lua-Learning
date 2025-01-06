@@ -1,41 +1,34 @@
--- Tables
+-- table.sort
 
-local players = {}
+local players = {
+    {name = "Jack", level = 9, score = 150},
+    {name = "Alice", level = 12, score = 200},
+    {name = "John", level = 2, score = 20},
+    {name = "Alan", level = 4, score = 20},
+    {name = "Kevin", level = 13, score = 300}
+}
 
-local function addPlayer(tbl, name, level, score)
-    table.insert(tbl, {name = name, level = level, score = score})
-end
-
-local function printPlayers(tbl)
+local function printPlayers(tbl, message)
+    print("\n" .. message)
     for _, value in ipairs(tbl) do
         print("Player: " .. value.name .. ", Level: " .. value.level .. ", Score: " .. value.score)
     end
 end
 
-local function getTopPlayer(tbl)
-    local name
-    local highestScore = 0
-    for _, value in ipairs(tbl) do
-        if value.score > highestScore then
-            name = value.name
-            highestScore = value.score
-        end
+printPlayers(players, "Before sorting:")
+
+table.sort(players, function (a, b)
+    if a.score == b.score then
+        return a.level > b.level
     end
-    if highestScore == 0 then
-        return -1
+    return a.score > b.score
+end)
+printPlayers(players, "After sorting by score in descending order:")
+
+table.sort(players, function (a, b)
+    if a.score == b.score then
+        return a.level < b.level
     end
-    return name
-end
-
--- Main
-addPlayer(players, "John Kido", 9, 180)
-addPlayer(players, "Jack McCallister", 12, 240)
-addPlayer(players, "Alan Lonesel", 4, 96)
-
-printPlayers(players)
-
-if getTopPlayer(players) == -1 then
-    print("The best player is missing.")
-else
-    print("The player with the most points: " .. getTopPlayer(players))
-end
+    return a.score < b.score
+end)
+printPlayers(players, "After sorting by score in ascending order:")
