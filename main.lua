@@ -1,4 +1,4 @@
--- table.remove
+-- table.insert
 
 local players = {
     {name = "Jack", level = 9, score = 150},
@@ -10,25 +10,27 @@ local players = {
 
 local function printPlayers(tbl, message)
     print("\n" .. message)
-    for _, value in ipairs(tbl) do
-        print("Player: " .. value.name .. ", Level: " .. value.level .. ", Score: " .. value.score)
+    for _, player in ipairs(tbl) do
+        print("Player: " .. player.name .. ", Level: " .. player.level .. ", Score: " .. player.score)
     end
 end
 
-local function removePlayer(tbl, name)
-    print("\nRemoving player: " .. name)
-    for i, value in ipairs(tbl) do
-        if value.name == name then
-            table.remove(tbl, i)
-            return "Player \"" .. name .. "\" has been deleted"
+local function getBestPlayers(tbl, min_score)
+    local result = {}
+    for _, player in ipairs(tbl) do
+        if player.score >= min_score then
+            table.insert(result, {name = player.name, level = player.level, score = player.score})
         end
     end
-    return "Player \"" .. name .. "\" does not exist."
+    return result
 end
 
-printPlayers(players, "Before removing:")
+printPlayers(players, "All players:")
 
-print(removePlayer(players, "Kevin"))
-printPlayers(players, "After removing:")
-
-print(removePlayer(players, "Yoshi"))
+local min_score = 100
+local best_players = getBestPlayers(players, min_score)
+if #best_players == 0 then
+    print("\nThere are no players who have scored more than " .. min_score .. " points.")
+else
+    printPlayers(best_players, "Players with scores >= " .. min_score .. ":")
+end
