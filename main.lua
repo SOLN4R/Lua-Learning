@@ -1,8 +1,17 @@
--- Cycle while
+-- io.read()
 
-local count = 0
+local player_name
+local player_level
 
-while count ~= 10 do
-    count = count + 1
-    print(count)
+io.write("Enter a name: ")
+player_name = io.read()
+
+io.write("Enter the level: ")
+player_level = io.read()
+
+
+local function greetPlayer(name, level)
+    return "Hello, " .. name .. "! Your level is " .. level .. "."
 end
+
+print(greetPlayer(player_name, player_level))
