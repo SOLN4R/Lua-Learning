@@ -1,4 +1,4 @@
--- table.sort
+-- table.remove
 
 local players = {
     {name = "Jack", level = 9, score = 150},
@@ -15,20 +15,20 @@ local function printPlayers(tbl, message)
     end
 end
 
-printPlayers(players, "Before sorting:")
-
-table.sort(players, function (a, b)
-    if a.score == b.score then
-        return a.level > b.level
+local function removePlayer(tbl, name)
+    print("\nRemoving player: " .. name)
+    for i, value in ipairs(tbl) do
+        if value.name == name then
+            table.remove(tbl, i)
+            return "Player \"" .. name .. "\" has been deleted"
+        end
     end
-    return a.score > b.score
-end)
-printPlayers(players, "After sorting by score in descending order:")
+    return "Player \"" .. name .. "\" does not exist."
+end
 
-table.sort(players, function (a, b)
-    if a.score == b.score then
-        return a.level < b.level
-    end
-    return a.score < b.score
-end)
-printPlayers(players, "After sorting by score in ascending order:")
+printPlayers(players, "Before removing:")
+
+print(removePlayer(players, "Kevin"))
+printPlayers(players, "After removing:")
+
+print(removePlayer(players, "Yoshi"))
