@@ -1,10 +1,8 @@
--- Functions
+-- Cycle while
 
-local name = "Jack McCallister"
-local level = 1
+local count = 0
 
-local function greetPlayer(name, level)
-    return "Hello, " .. name .. "! Your level is " .. level .. "."
+while count ~= 10 do
+    count = count + 1
+    print(count)
 end
-
-print(greetPlayer(name, level))
