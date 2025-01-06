@@ -1,11 +1,7 @@
--- Conditional operators
+-- Cycle for
 
-local score = 0
+local players = {"Jack", "John", "Alan"}
 
-if score >= 100 then
-    print("You've won!")
-elseif score >= 50 and score < 100 then
-    print ("You're close to victory!")
-else
-    print("Try again!")
+for i, value in ipairs(players) do
+    print("Player " .. i .. ": " .. value)
 end
