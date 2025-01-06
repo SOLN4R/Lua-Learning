@@ -1,7 +1,11 @@
--- Variables, data types
+-- Conditional operators
 
-local name = "Jack McCallister"
-local age = 24
-local level = "Beginner"
+local score = 0
 
-print("Name: " .. name .. "\nAge: " .. age .. "\nLevel: " .. level)
+if score >= 100 then
+    print("You've won!")
+elseif score >= 50 and score < 100 then
+    print ("You're close to victory!")
+else
+    print("Try again!")
+end
