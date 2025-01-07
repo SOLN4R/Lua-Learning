@@ -1,5 +1,0 @@
-[2025-01-08 00:19:30] Jack: creating a Player
-[2025-01-08 00:19:30] Alice: creating a Player
-[2025-01-08 00:19:30] Jack: raised the level to 11
-[2025-01-08 00:19:30] Alice: reduced the score by 20, new score: 140
-[2025-01-08 00:19:30] Alice: dropped the level to 1
