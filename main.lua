@@ -1,36 +1,49 @@
--- Animation using sprites
+-- User input (keyboard)
 
-local spriteSheet
-local quads = {}
-local currentFrame = 1
-local frameTime = 0.1
-local timer = 0
+local x, y, size, speed
+local color
 
 function love.load()
-    spriteSheet = love.graphics.newImage("assets/walk_sprite_sheet.png")
-
-    local frameWidth, frameHeight = 96, 128
-    local sheetWidth = spriteSheet:getWidth()
-    local sheetHeight = spriteSheet:getHeight()
-
-    for y = 0, sheetHeight - frameHeight, frameHeight do
-        for x = 0, sheetWidth - frameWidth, frameWidth do
-            table.insert(quads, love.graphics.newQuad(x, y, frameWidth, frameHeight, sheetWidth, sheetHeight))
-        end
-    end
+    x, y = 200, 300
+    size = 30
+    speed = 200
+    color = {1, 1, 1}
 end
 
 function love.update(dt)
-    timer = timer + dt
-    if timer >= frameTime then
-        timer = timer - frameTime
-        currentFrame = currentFrame + 1
-        if currentFrame > #quads then
-            currentFrame = 1
-        end
+    local dx, dy = 0, 0
+
+    if love.keyboard.isDown("w") then
+        dy = dy - 1
+    end
+    if love.keyboard.isDown("s") then
+        dy = dy + 1
+    end
+    if love.keyboard.isDown("a") then
+        dx = dx - 1
+    end
+    if love.keyboard.isDown("d") then
+        dx = dx + 1
+    end
+
+    if dx ~= 0 or dy ~= 0 then
+        local length = math.sqrt(dx^2 + dy^2)
+        dx, dy = dx / length, dy / length
+    end
+
+    x = x + dx * speed * dt
+    y = y + dy * speed * dt
+end
+
+function love.keypressed(key)
+    if key == "space" then
+        color = {love.math.random(), love.math.random(), love.math.random()}
+    elseif key == "escape" then
+        love.event.quit()
     end
 end
 
 function love.draw()
-    love.graphics.draw(spriteSheet, quads[currentFrame], 300, 200)
+    love.graphics.setColor(color)
+    love.graphics.rectangle("fill", x, y, size, size)
 end
