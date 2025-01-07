@@ -1,11 +1,29 @@
--- object-oriented approach
+-- Event handling
 
--- Parent Class Player
+-- Events
+local events = {}
+
+local function addEvent(log, name, action)
+    local timestamp = os.date("%Y-%m-%d %H:%M:%S")
+    local event = string.format("[%s] %s: %s", timestamp, name, action)
+    table.insert(log, event)
+end
+
+local function printLog(log)
+    print("\nLogs:")
+    for _, event in ipairs(log) do
+        print(event)
+    end
+end
+
+-- Class Player
 local Player = {}
 Player.__index = Player
 
 function Player:new(name, level, score)
     local object = {name = name or "null", level = level or 1, score = score or 0}
+    print(string.format("A player has been added: Name: %s | Level: %d | Score: %d", object.name, object.level, object.score))
+    addEvent(events, object.name, "creating a Player")
     setmetatable(object, Player)
     return object
 end
@@ -14,6 +32,7 @@ function Player:increaseLevel()
     print("\nIncreasing " .. self.name .. "'s level...")
     self.level = self.level + 1
     self.score = self.score + 20
+    addEvent(events, self.name, "raised the level to " .. self.level)
 end
 
 function Player:decreaseScore(amount)
@@ -23,6 +42,7 @@ function Player:decreaseScore(amount)
     end
     self.score = math.max(0, self.score - amount)
     print(string.format("\nDecreasing %s's score by %d...", self.name, amount))
+    addEvent(events, self.name, "reduced the score by " .. amount .. ", new score: " .. self.score)
 end
 
 function Player:resetLevel()
@@ -32,65 +52,20 @@ function Player:resetLevel()
     end
     self.level = 1
     print("\nResetting the " .. self.name .. " level...")
+    addEvent(events, self.name, "dropped the level to " .. self.level)
 end
 
 function Player:printInfo()
     print(string.format("Name: %s | Level: %d | Score: %d", self.name, self.level, self.score))
 end
 
--- Child Class VipPlayer
-local VipPlayer = setmetatable({}, {__index = Player})
-VipPlayer.__index = VipPlayer
-
-function VipPlayer:new(name, level, score, score_bonus)
-    local object = Player.new(self, name, level, score)
-    setmetatable(object, VipPlayer)
-    object.name = string.format("%s (VIP)", name)
-    object.score_bonus = score_bonus or 50
-    return object
-end
-
-function VipPlayer:increaseLevel()
-    print("\nIncreasing " .. self.name .. "'s level...")
-    self.level = self.level + 1
-    self.score = self.score + self.score_bonus
-end
-
--- Players array
-local players = {}
-
-local function printPlayers(tbl, message)
-    message = message or "\nPlayers:"
-    print(message)
-
-    for _, player in ipairs(tbl) do
-        player:printInfo()
-    end
-
-end
-
 -- Main
-local player_1 = Player:new("Jack", 9, 150)
-local player_2 = VipPlayer:new("Alice", 12, 200)
-local player_3 = Player:new("Alan", 3, 30)
 
-table.insert(players, player_1)
-table.insert(players, player_2)
-table.insert(players, player_3)
+local player_1 = Player:new("Jack", 10, 200)
+local player_2 = Player:new("Alice", 8, 160)
 
-printPlayers(players)
-
-player_1:decreaseScore(50)
-player_1:printInfo()
 player_1:increaseLevel()
-player_1:printInfo()
+player_2:decreaseScore(20)
+player_2:resetLevel()
 
-player_2:increaseLevel()
-player_2:printInfo()
-player_2:decreaseScore(10)
-player_2:printInfo()
-
-player_3:resetLevel()
-player_3:printInfo()
-
-printPlayers(players)
+printLog(events)
