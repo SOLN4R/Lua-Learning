@@ -1,20 +1,29 @@
--- Text and Fonts
+-- Sound
 
-local font
-local text = "Hello, Love2D!"
+local soundEffect
+local backgroundMusic
+local musicPlaying = true
 
 function love.load()
-    font = love.graphics.newFont("assets/Montserrat-Regular.ttf", 32)
-    love.graphics.setFont(font)
+    soundEffect = love.audio.newSource("assets/beep.wav", "static")
+    backgroundMusic = love.audio.newSource("assets/bg_music.mp3", "stream")
+
+    soundEffect:setVolume(0.5)
+    backgroundMusic:setVolume(0.1)
+
+    backgroundMusic:setLooping(true)
+    backgroundMusic:play()
 end
 
-function love.draw()
-    love.graphics.setColor(0, 1, 0)
-
-    local width = love.graphics.getWidth()
-    local height = love.graphics.getHeight()
-    love.graphics.print(text, width * 0.5 - font:getWidth(text) * 0.5, height * 0.5 - font:getHeight() * 0.5)
-
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.print(os.date("%H:%M:%S"), width - 150, 10)
+function love.keypressed(key)
+    if key == "space" then
+        soundEffect:play()
+    elseif key == "m" then
+        if musicPlaying then
+            backgroundMusic:pause()
+        else
+            backgroundMusic:play()
+        end
+        musicPlaying = not musicPlaying
+    end
 end
