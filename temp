@@ -1,0 +1,21 @@
+-- Blank
+local StateManager = require("states.StateManager")
+
+local StateName = {}
+
+
+function StateName:load(data)
+end
+
+function StateName:update(dt)
+
+end
+
+function StateName:draw()
+end
+
+function StateName:keypressed(key)
+
+end
+
+return StateName
